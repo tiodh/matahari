@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\CommunityPartnerships\Tables;
+namespace App\Filament\Resources\Segments\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -10,14 +10,12 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 
-class CommunityPartnershipsTable
+class SegmentsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('segments.name')
-                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('created_at')
@@ -30,14 +28,7 @@ class CommunityPartnershipsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('segments_id')
-                    ->label('segments')
-                    ->relationship(
-                        name: 'segments',
-                        titleAttribute: 'name',
-                    )
-                    ->searchable()
-                    ->preload(),
+                //
             ])
             ->recordActions([
                 ViewAction::make(),

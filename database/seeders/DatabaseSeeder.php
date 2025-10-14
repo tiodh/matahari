@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CommunityPartnerships;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -75,6 +76,7 @@ class DatabaseSeeder extends Seeder
             VisitsSeeder::class,
             TimesSeeder::class,
             ActivitiesSeeder::class,
+            SegmentsSeeder::class,
             CommunityPartnershipsSeeder::class,
         ]);
     }

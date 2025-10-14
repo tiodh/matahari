@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Filament\Resources\CommunityPartnerships\Schemas;
+namespace App\Filament\Resources\Segments\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
-class CommunityPartnershipsInfolist
+class SegmentsInfolist
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextEntry::make('segments.name')
-                    ->label('Segments'),
-                TextEntry::make('name'),
+                TextEntry::make('name')
+                    ->columnSpanFull(),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
