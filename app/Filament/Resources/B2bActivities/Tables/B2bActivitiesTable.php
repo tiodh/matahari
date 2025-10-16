@@ -1,29 +1,40 @@
 <?php
 
-namespace App\Filament\Resources\Users\Tables;
+namespace App\Filament\Resources\B2bActivities\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use STS\FilamentImpersonate\Actions\Impersonate as ActionsImpersonate;
-use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 
-class UsersTable
+class B2bActivitiesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('visiting_schedules.id')
                     ->searchable(),
-                TextColumn::make('email')
-                    ->label('Email address')
+                ImageColumn::make('photo')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
+                TextColumn::make('spv.name')
+                    ->searchable(),
+                TextColumn::make('times.name')
+                    ->searchable(),
+                TextColumn::make('activities.name')
+                    ->searchable(),
+                TextColumn::make('date')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('brand')
+                    ->searchable(),
+                TextColumn::make('product_type')
+                    ->searchable(),
+                TextColumn::make('sales')
+                    ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -40,7 +51,6 @@ class UsersTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                ActionsImpersonate::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -1015,6 +1015,7 @@ class CommunityPartnershipsSeeder extends Seeder
             [9,'Telkomsel GraPARI Pontianak - Cabang Branch-10'],
             [9,'Warung Internet Branch-4 Pontianak']
         ];
+        
         foreach($partnerships as $partnership)
         {
             CommunityPartnerships::firstOrCreate([
