@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\B2bActivities\Schemas;
 
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -25,7 +26,8 @@ class B2bActivitiesInfolist
                 TextEntry::make('product_type'),
                 TextEntry::make('sales')
                     ->numeric(),
-                TextEntry::make('photo'),
+                ImageEntry::make('photo')
+                    ->disk('public'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),

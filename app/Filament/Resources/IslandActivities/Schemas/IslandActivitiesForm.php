@@ -47,6 +47,7 @@ class IslandActivitiesForm
                     ->numeric(),
                 FileUpload::make('photo')
                     ->directory('thumbnails') 
+                    ->disk('public')
                     ->image() 
                     ->maxSize(2048)
                     ->required(),

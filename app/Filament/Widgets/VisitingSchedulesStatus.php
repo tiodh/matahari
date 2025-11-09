@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class VisitingSchedulesStatus extends TableWidget
 {
+    protected int | string | array $columnSpan = 'full';
     public function table(Table $table): Table
     {
         $currentUserId = Auth::id();

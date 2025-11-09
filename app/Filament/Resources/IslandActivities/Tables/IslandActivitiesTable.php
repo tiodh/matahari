@@ -12,6 +12,10 @@ use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Carbon;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
+use Illuminate\Support\Facades\URL;
 
 class IslandActivitiesTable
 {
@@ -22,6 +26,7 @@ class IslandActivitiesTable
                 TextColumn::make('islands.name')
                     ->searchable(),
                 ImageColumn::make('photo')
+                    ->disk('public')
                     ->searchable(),
                 TextColumn::make('spv.name')
                     ->searchable(),
@@ -48,6 +53,7 @@ class IslandActivitiesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('spv_id')
                     ->label('Supervisor')
@@ -73,6 +79,36 @@ class IslandActivitiesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exports(
+                        [
+                            ExcelExport::make()
+                                ->withFilename(fn() => 'Island Activities-' . now()->format('Ymd'))
+                                ->withColumns([
+                                    Column::make('islands.name'),
+                                    Column::make('photo')
+                                        ->heading('Photo')
+                                        ->formatStateUsing(
+                                            fn($state) =>
+                                            $state ? URL::to($state) : '-'
+                                        ),
+                                    Column::make('spv.name')->heading('Supervisor'),
+                                    Column::make('time.name')->heading('Time'),
+                                    Column::make('activities.name')->heading('Activity'),
+                                    Column::make('date')
+                                        ->heading('Date')
+                                        ->formatStateUsing(fn($state) => $state ? Carbon::parse($state)->format('d-m-Y') : null),
+                                    Column::make('brand')->heading('Brand'),
+                                    Column::make('product_type')->heading('Product Type'),
+                                    Column::make('sales')->heading('Sales'),
+                                    Column::make('created_at')
+                                        ->heading('Created At')
+                                        ->formatStateUsing(fn($state) => $state ? Carbon::parse($state)->format('d-m-Y') : null),
+                                ])
+                        ]
+                    ),
+            ]);;
     }
 }

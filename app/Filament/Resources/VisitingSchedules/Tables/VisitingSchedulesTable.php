@@ -40,6 +40,7 @@ class VisitingSchedulesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at','desc')
             ->filters([
                 Filter::make('current_week')
                     ->label('Current 7 Days')

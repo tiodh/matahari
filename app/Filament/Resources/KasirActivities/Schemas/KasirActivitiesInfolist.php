@@ -24,7 +24,8 @@ class KasirActivitiesInfolist
                 TextEntry::make('product_type'),
                 TextEntry::make('sales')
                     ->numeric(),
-                ImageEntry::make('photo'),
+                ImageEntry::make('photo')
+                    ->disk('public'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),

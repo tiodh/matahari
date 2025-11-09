@@ -20,7 +20,7 @@ class IslandActivitiesResource extends Resource
 {
     protected static ?string $model = IslandActivities::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Map;
 
     public static function form(Schema $schema): Schema
     {

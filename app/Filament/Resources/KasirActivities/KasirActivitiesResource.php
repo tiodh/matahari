@@ -20,7 +20,7 @@ class KasirActivitiesResource extends Resource
 {
     protected static ?string $model = KasirActivities::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Banknotes;
 
     public static function form(Schema $schema): Schema
     {

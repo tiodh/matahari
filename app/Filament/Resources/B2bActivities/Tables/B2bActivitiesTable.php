@@ -9,6 +9,11 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 
 class B2bActivitiesTable
 {
@@ -16,10 +21,15 @@ class B2bActivitiesTable
     {
         return $table
             ->columns([
-                TextColumn::make('visiting_schedules.id')
+                TextColumn::make('id')
+                    ->label('Visiting Schedules')
+                    ->getStateUsing(fn($record)=>
+                        "{$record->spv->name} - {$record->visiting_schedules->community_partnerships->name}"
+                    )
                     ->searchable(),
                 ImageColumn::make('photo')
-                    ->searchable(),
+                    ->disk('public')
+                    ->visibility('public'),
                 TextColumn::make('spv.name')
                     ->searchable(),
                 TextColumn::make('times.name')
@@ -45,6 +55,7 @@ class B2bActivitiesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
@@ -56,6 +67,41 @@ class B2bActivitiesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exports(
+                        [
+                            ExcelExport::make()
+                                ->withFilename(fn() => 'B2B Activities-' . now()->format('Ymd'))
+                                ->withColumns([
+                                    Column::make('supervisors')
+                                        ->heading('Supervisor & Community')
+                                        ->getStateUsing(
+                                            fn($record) => ($record->spv?->name ?? '-') . ' / ' . ($record->visiting_schedules->community_partnerships?->name ?? '-')
+                                        ),
+
+                                    Column::make('photo')
+                                        ->heading('Photo')
+                                        ->formatStateUsing(
+                                            fn($state) =>
+                                            $state ? URL::to($state) : '-'
+                                        ),
+                                    Column::make('spv.name')->heading('Supervisor'),
+                                    Column::make('time.name')->heading('Time'),
+                                    Column::make('activities.name')->heading('Activity'),
+                                    Column::make('date')
+                                        ->heading('Date')
+                                        ->formatStateUsing(fn($state) => $state ? Carbon::parse($state)->format('d-m-Y') : null),
+                                    Column::make('brand')->heading('Brand'),
+                                    Column::make('product_type')->heading('Product Type'),
+                                    Column::make('sales')->heading('Sales'),
+                                    Column::make('created_at')
+                                        ->heading('Created At')
+                                        ->formatStateUsing(fn($state) => $state ? Carbon::parse($state)->format('d-m-Y') : null),
+                                ])
+                        ]
+                    ),
             ]);
     }
 }

@@ -47,7 +47,8 @@ class B2bActivitiesForm
                     ->required()
                     ->numeric(),
                 FileUpload::make('photo')
-                    ->directory('thumbnails') 
+                    ->directory('thumbnails')
+                    ->disk('public') 
                     ->image() 
                     ->maxSize(2048)
                     ->required(),

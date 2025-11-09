@@ -11,7 +11,11 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use pxlrbt\FilamentExcel\Columns\Column;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\URL;
 
 class KasirActivitiesTable
 {
@@ -19,11 +23,12 @@ class KasirActivitiesTable
     {
         return $table
             ->columns([
-                ImageColumn::make('photo')
-                    ->searchable(),
                 TextColumn::make('kasir.name')
                     ->numeric()
                     ->sortable(),
+                ImageColumn::make('photo')
+                    ->disk('public')
+                    ->searchable(),
                 TextColumn::make('times.name')
                     ->numeric()
                     ->sortable(),
@@ -49,6 +54,7 @@ class KasirActivitiesTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at','desc')
             ->filters([
                 SelectFilter::make('kasir_id')
                     ->label('Kasir')
@@ -74,6 +80,35 @@ class KasirActivitiesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exports(
+                        [
+                            ExcelExport::make()
+                                ->withFilename(fn() => 'Kasir Activities-' . now()->format('Ymd'))
+                                ->withColumns([
+                                    Column::make('photo')
+                                        ->heading('Photo')
+                                        ->formatStateUsing(
+                                            fn($state) =>
+                                            $state ? URL::to($state) : '-'
+                                        ),
+                                    Column::make('kasir.name')->heading('Supervisor'),
+                                    Column::make('time.name')->heading('Time'),
+                                    Column::make('activities.name')->heading('Activity'),
+                                    Column::make('date')
+                                        ->heading('Date')
+                                        ->formatStateUsing(fn($state) => $state ? Carbon::parse($state)->format('d-m-Y') : null),
+                                    Column::make('brand')->heading('Brand'),
+                                    Column::make('product_type')->heading('Product Type'),
+                                    Column::make('sales')->heading('Sales'),
+                                    Column::make('created_at')
+                                        ->heading('Created At')
+                                        ->formatStateUsing(fn($state) => $state ? Carbon::parse($state)->format('d-m-Y') : null),
+                                ])
+                        ]
+                    ),
+            ]);;
     }
 }

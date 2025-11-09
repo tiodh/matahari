@@ -20,7 +20,7 @@ class B2bActivitiesResource extends Resource
 {
     protected static ?string $model = B2bActivities::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
     public static function form(Schema $schema): Schema
     {

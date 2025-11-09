@@ -18,9 +18,11 @@ use Filament\Tables\Table;
 
 class SegmentsResource extends Resource
 {
+    protected static string|\UnitEnum|null $navigationGroup = 'Partners';
+
     protected static ?string $model = Segments::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArchiveBox;
 
     public static function form(Schema $schema): Schema
     {
